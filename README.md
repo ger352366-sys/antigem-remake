@@ -27,6 +27,11 @@
 
 </div>
 
+> [!WARNING]
+> **Lưu ý / Note:**
+> - 🇻🇳 **Không khuyến khích cho Android 15** (có thể gặp sự cố tương thích hoặc lỗi ngoài ý muốn).
+> - 🇬🇧 **Not recommended for Android 15** (may encounter compatibility issues or unexpected behavior).
+
 > [!IMPORTANT]
 > ### AntiGem has a new home: `ai.antigem`
 > From **v2.0.0**, AntiGem is released under its own package name, **`ai.antigem`**. The old app was installed as `com.termux`, the Termux project's package name, which we used only so Termux packages could run at full speed. Shipping AntiGem under another project's name wasn't right, and it also stopped AntiGem from being installed next to the real Termux app. AntiGem now rewrites `com.termux` to `ai.antigem` inside each package as it installs (both names are 10 characters, so it is swapped byte for byte), with no proot and no slowdown.
