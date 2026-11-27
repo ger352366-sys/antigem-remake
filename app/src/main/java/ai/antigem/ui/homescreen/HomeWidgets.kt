@@ -25,14 +25,16 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ai.antigem.i18n.L
 
-/** AntiGem's home-screen widgets (ChatsWidget disabled to prevent OOM/crashes). */
+/** AntiGem's home-screen widgets. */
 enum class WidgetKind(private val titleText: () -> String, private val descriptionText: () -> String, val receiver: Class<out GlanceAppWidgetReceiver>) {
+    CHATS({ L.homescreen.homeWidgets.chats }, { L.homescreen.homeWidgets.yourNewestOrPinnedChatsLive }, ChatsWidgetReceiver::class.java),
     ACTIONS({ L.homescreen.homeWidgets.quickActions }, { L.homescreen.homeWidgets.oneTapButtonsYouChooseNew }, ActionsWidgetReceiver::class.java),
     SCRIPTS({ L.homescreen.homeWidgets.scripts }, { L.homescreen.homeWidgets.yourScriptsFromShortcutsLikeTermux }, ScriptsWidgetReceiver::class.java);
     val title: String get() = titleText()
     val description: String get() = descriptionText()
 
     fun widget(): GlanceAppWidget = when (this) {
+        CHATS -> ChatsWidget()
         ACTIONS -> ActionsWidget()
         SCRIPTS -> ScriptsWidget()
     }
@@ -102,7 +104,7 @@ object HomeWidgets {
         // the look changed: every widget is redrawn now, with the newest data
         HomeSnapshot.publishToWidgets()
         scope.launch {
-            WidgetKind.entries.forEach { k -> runCatching { k.widget().updateAll(app) } }
+            WidgetKind.entries.filter { it != WidgetKind.CHATS }.forEach { k -> runCatching { k.widget().updateAll(app) } }
         }
     }
 
@@ -140,7 +142,9 @@ object HomeWidgets {
         scope.launch {
             runCatching {
                 val m = GlanceAppWidgetManager(app)
-                WidgetKind.entries.forEach { k -> m.setWidgetPreviews(k.receiver.kotlin) }
+                WidgetKind.entries.filter { it != WidgetKind.CHATS }.forEach { k ->
+                    runCatching { m.setWidgetPreviews(k.receiver.kotlin) }
+                }
                 p.edit().putInt("previews_version", BuildConfig.VERSION_CODE).apply()
             }.onFailure { Log.w(TAG, "previews: ${it.message}") }
         }
