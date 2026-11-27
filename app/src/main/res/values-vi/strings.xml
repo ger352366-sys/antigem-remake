@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">AntiGem</string>
+    <string name="anti_term_name">AntiTerm</string>
+    <string name="termux_name">Termux</string>
+    <string name="accessibility_service_name">Tự động hóa Android AntiGem</string>
+    <string name="accessibility_service_description">Cho phép các tác nhân AI bạn kết nối với MCP Tự động hóa Android của AntiGem đọc màn hình, chụp ảnh màn hình, chạm, vuốt, nhập văn bản và mở ứng dụng trên điện thoại này. Dịch vụ chỉ hoạt động khi tác nhân gọi một trong các công cụ đó.</string>
+    <string name="copy_text">Sao chép</string>
+    <string name="paste_text">Dán</string>
+    <string name="text_selection_more">Thêm</string>
+    <string name="select_all">Chọn tất cả</string>
+    <string name="share_text">Chia sẻ</string>
+    <string name="select_url">Chọn URL</string>
+    <string name="share_transcript">Chia sẻ bản ghi</string>
+    <string name="reset_terminal">Đặt lại Terminal</string>
+    <string name="no_urls_found">Không tìm thấy URL nào trong bản ghi</string>
+    <!-- Home-screen widgets: names and descriptions in the launcher's widget picker -->
+    <string name="widget_chats_label">Cuộc trò chuyện</string>
+    <string name="widget_chats_description">Các cuộc trò chuyện mới nhất hoặc đã ghim, cập nhật trực tiếp: việc đang chạy và đã xong</string>
+    <string name="widget_actions_label">Thao tác nhanh</string>
+    <string name="widget_actions_description">Nút một chạm: trò chuyện mới, Terminal, Trình duyệt, Mã nguồn, Tệp và hơn thế nữa</string>
+    <string name="widget_scripts_label">Tập lệnh</string>
+    <string name="widget_scripts_description">Chạy các tập lệnh ~/.shortcuts của bạn, tương tự Termux:Widget</string>
+</resources>
