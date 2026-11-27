@@ -373,6 +373,8 @@
         </activity>
 
         <!-- Home-screen widgets: Chats, Quick actions, One chat, Scripts -->
+        <!-- ChatsWidget disabled to prevent OOM/crash as noted in version.json -->
+        <!--
         <receiver
             android:name="ai.antigem.ui.homescreen.ChatsWidgetReceiver"
             android:exported="true"
@@ -384,6 +386,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_chats_info" />
         </receiver>
+        -->
         <receiver
             android:name="ai.antigem.ui.homescreen.ActionsWidgetReceiver"
             android:exported="true"

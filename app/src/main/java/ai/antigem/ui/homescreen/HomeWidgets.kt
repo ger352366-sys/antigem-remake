@@ -90,7 +90,8 @@ object HomeWidgets {
                 VoiceCallLauncher.appVisible.first { !it }
                 pending.value = false
                 HomeSnapshot.publishToWidgets()
-                runCatching { ChatsWidget().updateAll(app) }.onFailure { Log.w(TAG, "update: ${it.message}") }
+                // ChatsWidget is disabled to prevent OOM
+                // runCatching { ChatsWidget().updateAll(app) }.onFailure { Log.w(TAG, "update: ${it.message}") }
             }
         }
     }
