@@ -167,7 +167,7 @@ android {
     }
 
     // Local ports differ per app so they can all run side by side: the old com.termux build uses 1234/1235/8765,
-    // release (ai.antigem) 1236/1237/8767, debug (ai.antidev, see androidComponents below) 1238/1239/8768
+    // release (ai.antigem) 1236/1237/8767, standalone/debug (ai.antidev) 1238/1239/8768
     buildTypes {
         debug {
             buildConfigField("int", "BRIDGE_PORT", "1238")
@@ -177,9 +177,9 @@ android {
             buildConfigField("boolean", "HAS_CHROOT", "${hasChroot("debug")}")
         }
         release {
-            buildConfigField("int", "BRIDGE_PORT", "1236")
-            buildConfigField("int", "HUB_PORT", "1237")
-            buildConfigField("int", "BROWSER_MCP_PORT", "8767")
+            buildConfigField("int", "BRIDGE_PORT", "1238")
+            buildConfigField("int", "HUB_PORT", "1239")
+            buildConfigField("int", "BROWSER_MCP_PORT", "8768")
             buildConfigField("boolean", "HAS_CHROOT", "${hasChroot("release")}")
             isMinifyEnabled = true
             isShrinkResources = true
@@ -888,11 +888,9 @@ androidComponents {
         variant.sources.kotlin?.addGeneratedSourceDirectory(generateChangelog, GenerateChangelogTask::outputDir)
         variant.sources.kotlin?.addGeneratedSourceDirectory(generateStrings, GenerateStringsTask::outputDir)
 
-        // Debug builds are their own app, ai.antidev ("AntiGem Dev"), so they install next to the release one. It must
-        // have the length of com.termux (10): the Termux packages are rewritten for it byte for byte.
-        // TEMPORARY: x86_64 debug builds stay ai.antigem while the x86_64 rootfs is made on the emulator (its backup
-        // must have ai.antigem paths). Remove `&& !isX86` once that rootfs is hosted.
-        if (variant.buildType == "debug" && !isX86) variant.applicationId.set("ai.antidev")
+        // Builds are standalone as ai.antidev so they install and run side by side next to ai.antigem.
+        // It has the length of com.termux (10 bytes), allowing Termux packages to be rewritten byte for byte.
+        if (!isX86) variant.applicationId.set("ai.antidev")
 
         val amBuildType = if (variant.buildType == "release") "release" else "debug"
         val termuxAm = tasks.register<TermuxAmAssetTask>("termuxAm${variant.name.replaceFirstChar { it.uppercase() }}") {
