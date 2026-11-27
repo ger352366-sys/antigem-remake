@@ -1,8 +1,10 @@
 {
-  "version_code": 147,
-  "version_name": "1.1.1",
+  "version_code": 148,
+  "version_name": "1.1.2",
   "min_supported_version_code": 2,
   "changelog": [
+    "Fixed Android 15 splash crash caused by unregistered ChatsWidget in Glance publishPreviews",
+    "Prevent premature moveTaskToBack on startup before UI is fully mounted",
     "Standalone package: separated as ai.antidev (AntiGem Remake) to install side-by-side with original AntiGem",
     "Separated local ports (1238/1239/8768) to prevent background port collisions",
     "Fixed app crash on startup and Out Of Memory (OOM) issue",

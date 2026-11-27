@@ -99,8 +99,8 @@ class MainActivity : ComponentActivity() {
         if (savedInstanceState == null) ai.antigem.data.homescreen.HomeRouter.handle(this, chatViewModel, intent)
         ai.antigem.data.homescreen.HomeSnapshot.start(application, chatViewModel)
         // links are signed one by one now: shortcuts and widgets made before get their signature once
-        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) { ai.antigem.data.homescreen.HomeLinks.resignOnce(applicationContext) }
-        ai.antigem.ui.homescreen.HomeWidgets.publishPreviews(this)
+        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) { runCatching { ai.antigem.data.homescreen.HomeLinks.resignOnce(applicationContext) } }
+        runCatching { ai.antigem.ui.homescreen.HomeWidgets.publishPreviews(this) }
         // Voice call tile / shortcut: the floating call window stays away while this screen is up; the long-press menu
         // of the app icon gets "Voice call"
         lifecycle.addObserver(androidx.lifecycle.LifecycleEventObserver { _, event ->
@@ -116,13 +116,24 @@ class MainActivity : ComponentActivity() {
 
         // Back that no screen handles (the chat root) puts the app in the background instead of closing it, on every
         // Android version. Registered before setContent, so every screen's own BackHandler still runs first.
+        var canMinimizeOnBack by mutableStateOf(false)
         onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                moveTaskToBack(true)
+                if (canMinimizeOnBack) {
+                    moveTaskToBack(true)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
             }
         })
 
         setContent {
+            LaunchedEffect(Unit) {
+                // Only allow minimizing to back once UI is fully mounted
+                canMinimizeOnBack = true
+            }
             val initialThemeMode = remember { chatViewModel.authPreferences.getThemeModeSync() }
             val themeMode by chatViewModel.themeMode.collectAsState(initial = initialThemeMode)
             val isSystemDark = ai.antigem.theme.isSystemInDarkThemeRobust()

@@ -25,16 +25,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ai.antigem.i18n.L
 
-/** AntiGem's three home-screen widgets. */
+/** AntiGem's home-screen widgets (ChatsWidget disabled to prevent OOM/crashes). */
 enum class WidgetKind(private val titleText: () -> String, private val descriptionText: () -> String, val receiver: Class<out GlanceAppWidgetReceiver>) {
-    CHATS({ L.homescreen.homeWidgets.chats }, { L.homescreen.homeWidgets.yourNewestOrPinnedChatsLive }, ChatsWidgetReceiver::class.java),
     ACTIONS({ L.homescreen.homeWidgets.quickActions }, { L.homescreen.homeWidgets.oneTapButtonsYouChooseNew }, ActionsWidgetReceiver::class.java),
     SCRIPTS({ L.homescreen.homeWidgets.scripts }, { L.homescreen.homeWidgets.yourScriptsFromShortcutsLikeTermux }, ScriptsWidgetReceiver::class.java);
     val title: String get() = titleText()
     val description: String get() = descriptionText()
 
     fun widget(): GlanceAppWidget = when (this) {
-        CHATS -> ChatsWidget()
         ACTIONS -> ActionsWidget()
         SCRIPTS -> ScriptsWidget()
     }
